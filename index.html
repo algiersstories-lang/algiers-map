@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Algiers Map</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+  <style>
+    #map {
+      height: 80vh;
+      width: 100%;
+    }
+
+    .legend {
+      background: rgba(255,255,255,0.95);
+      padding: 10px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      font-size: 13px;
+    }
+
+    .legend h4 {
+      margin: 0 0 8px;
+    }
+
+    .legend button {
+      display: block;
+      width: 100%;
+      margin: 3px 0;
+      padding: 5px;
+      border: none;
+      background: #eee;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .legend button:hover {
+      background: #ddd;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+  // ============================
+  // 1. MAP
+  // ============================
+  var map = L.map('map').setView([36.78497, 3.06081], 14);
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap & CartoDB'
+  }).addTo(map);
+
+  // ============================
+  // 2. ICONS
+  // ============================
+  var mosqueIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/algiersstories-lang/images/main/mosque2.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32]
+  });
+
+  var gateIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/algiersstories-lang/images/main/porte2.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32]
+  });
+
+  var palaceIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/algiersstories-lang/images/main/palace.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32]
+  });
+
+  // ============================
+  // 3. CASBAH POLYGON
+  // ============================
+  var casbahPolygon = [
+    [36.7895689, 3.0627774],
+    [36.7894546, 3.0612137],
+    [36.7883606, 3.0591832],
+    [36.7856572, 3.0560076],
+    [36.7838302, 3.0546396],
+    [36.7823641, 3.0564583],
+    [36.7812922, 3.0593658],
+    [36.7806843, 3.0621768],
+    [36.7841278, 3.0635607],
+    [36.7850559, 3.064926],
+    [36.78642, 3.0659217],
+    [36.7864616, 3.0668803],
+    [36.7866751, 3.067839],
+    [36.786595, 3.0685761],
+    [36.78563, 3.0684656],
+    [36.7859538, 3.0692564],
+    [36.7873844, 3.0694884],
+    [36.7881312, 3.0693242],
+    [36.788335, 3.0687628],
+    [36.7878957, 3.0686323],
+    [36.7874563, 3.0684159],
+    [36.7872626, 3.0664777],
+    [36.7878623, 3.0651406],
+    [36.7895689, 3.0627774]
+  ];
+
+  L.polygon(casbahPolygon, {
+    color: '#8B0000',
+    weight: 2,
+    fillColor: '#d4a373',
+    fillOpacity: 0.2
+  }).addTo(map);
+
+  // ============================
+  // 4. LAYERS
+  // ============================
+  var mosqueLayer = L.layerGroup().addTo(map);
+  var gateLayer = L.layerGroup().addTo(map);
+  var palaceLayer = L.layerGroup().addTo(map);
+
+  // ============================
+  // 5. LEGEND + FILTERS
+  // ============================
+  var legend = L.control({ position: 'bottomright' });
+
+  legend.onAdd = function () {
+    var div = L.DomUtil.create('div', 'legend');
+
+    div.innerHTML = `
+      <h4>Filters</h4>
+
+      <button onclick="showAll()">Show All</button>
+      <button onclick="showMosques()">Mosques</button>
+      <button onclick="showGates()">Gates</button>
+      <button onclick="showPalaces()">Palaces</button>
+
+      <hr>
+
+      <div><img src="https://raw.githubusercontent.com/algiersstories-lang/images/main/mosque2.png" width="20"> Mosque</div>
+      <div><img src="https://raw.githubusercontent.com/algiersstories-lang/images/main/porte2.png" width="20"> Gate</div>
+      <div><img src="https://raw.githubusercontent.com/algiersstories-lang/images/main/palace.png" width="20"> Palace</div>
+    `;
+
+    L.DomEvent.disableClickPropagation(div);
+    return div;
+  };
+
+  legend.addTo(map);
+
+  // ============================
+  // 6. FILTER FUNCTIONS
+  // ============================
+  function showAll() {
+    map.addLayer(mosqueLayer);
+    map.addLayer(gateLayer);
+    map.addLayer(palaceLayer);
+  }
+
+  function showMosques() {
+    map.addLayer(mosqueLayer);
+    map.removeLayer(gateLayer);
+    map.removeLayer(palaceLayer);
+  }
+
+  function showGates() {
+    map.addLayer(gateLayer);
+    map.removeLayer(mosqueLayer);
+    map.removeLayer(palaceLayer);
+  }
+
+  function showPalaces() {
+    map.addLayer(palaceLayer);
+    map.removeLayer(mosqueLayer);
+    map.removeLayer(gateLayer);
+  }
+
+  // ============================
+  // 7. FETCH DATA
+  // ============================
+  fetch("https://opensheet.elk.sh/1VXIKnUOE_k9W195-BjsM1fX-HvC5B7GD7Zd0blubEwY/markers")
+    .then(res => res.json())
+    .then(data => {
+
+      data.forEach(function(place) {
+
+        var lat = parseFloat(place.lat);
+        var lon = parseFloat(place.lon);
+        var category = (place.category || "").toLowerCase();
+
+        var marker;
+
+        if (category === "gate") {
+          marker = L.marker([lat, lon], { icon: gateIcon }).addTo(gateLayer);
+        } else if (category === "palais" || category === "palace") {
+          marker = L.marker([lat, lon], { icon: palaceIcon }).addTo(palaceLayer);
+        } else {
+          marker = L.marker([lat, lon], { icon: mosqueIcon }).addTo(mosqueLayer);
+        }
+
+        // ============================
+        // POPUP WITH IMAGE
+        // ============================
+        marker.bindPopup(`
+          <div style="max-width:220px">
+
+            <h3 style="margin-bottom:5px;">${place.name}</h3>
+
+            ${place.photo ? `
+              <a href="${place.photo}" target="_blank">
+                <img src="${place.photo}" 
+                     style="width:100%; max-height:120px; object-fit:cover; border-radius:5px; margin-bottom:5px;">
+              </a>
+            ` : ""}
+
+            <p style="margin:5px 0;">${place.description || ""}</p>
+
+            ${place.link ? `
+              <a href="${place.link}" target="_blank" 
+                 style="color:#007BFF; text-decoration:none;">
+                 Read more →
+              </a>
+            ` : ""}
+
+          </div>
+        `);
+
+      });
+
+    });
+
+</script>
+
+</body>
+</html>
