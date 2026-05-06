@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{{name}} | Algiers Stories</title>
+  <meta name="description" content="{{short_desc}}">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="{{name}}">
+  <meta property="og:description" content="{{short_desc}}">
+  <meta property="og:image" content="{{image1}}">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f8f6f3;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #8B0000;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 5px;
+    }
+
+    .intro {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    .section {
+      margin-top: 30px;
+    }
+
+    .section h2 {
+      border-left: 4px solid #8B0000;
+      padding-left: 10px;
+      margin-bottom: 10px;
+    }
+
+    img {
+      width: 100%;
+      border-radius: 6px;
+      margin: 15px 0;
+    }
+
+    .external {
+      margin-top: 30px;
+      padding: 10px;
+      background: #eee;
+      border-radius: 5px;
+    }
+
+    .back {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px;
+      background: #8B0000;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h2>Algiers Stories</h2>
+  <nav>
+    <a href="../index.html">Map</a>
+    <a href="../categories/mosques.html">Mosques</a>
+    <a href="../categories/gates.html">Gates</a>
+    <a href="../categories/palaces.html">Palaces</a>
+  </nav>
+</header>
+
+<div class="container">
+
+  <!-- NAME -->
+  <h1>{{name}}</h1>
+
+  <!-- SHORT DESCRIPTION -->
+  <p class="intro">{{short_desc}}</p>
+
+  <!-- IMAGE 1 -->
+  <img src="{{image1}}" alt="">
+
+  <!-- LONG DESCRIPTION -->
+  <p>{{long_description}}</p>
+
+  <!-- IMAGE 2 -->
+  <img src="{{image2}}" alt="">
+
+  <!-- GEOGRAPHY -->
+  <div class="section">
+    <h2>Geography</h2>
+    <p>{{geography}}</p>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="section">
+    <h2>History</h2>
+    <p>{{history}}</p>
+  </div>
+
+  <!-- ARCHITECTURE -->
+  <div class="section">
+    <h2>Architecture</h2>
+    <p>{{architecture}}</p>
+  </div>
+
+  <!-- EXTERNAL LINK -->
+  {{external_link_block}}
+
+  <a href="../index.html" class="back">← Back to Map</a>
+
+</div>
+
+</body>
+</html>
